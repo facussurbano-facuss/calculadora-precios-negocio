@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculadora de Precios para tu Negocio</title>
+<meta name="description" content="Calculadora gratis: descubrí a qué precio tenés que vender para cubrir costos, gastos y comisiones y ganar lo que querés. Por Facuss Urbano.">
+<meta property="og:title" content="¿A cuánto tenés que vender? — Calculadora de precios gratis">
+<meta property="og:description" content="Cargá tus costos y en un minuto ves tu precio de venta, tu ganancia real y cuántas unidades necesitás vender para no perder plata.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg:#f5f7f6; --card:#ffffff; --ink:#0f1a17; --muted:#5b6b66; --line:#dde5e2;
+--brand:#0e8a6a; --brand-ink:#ffffff; --brand-soft:#e2f3ee;
+--ok:#1f9d55; --mid:#d49a00; --bad:#d64545;
+--shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+}
+@media (prefers-color-scheme: dark){
+:root:not([data-theme="light"]){
+--bg:#0b1110; --card:#121b19; --ink:#e8f0ed; --muted:#93a59f; --line:#22302c;
+--brand:#2fc497; --brand-ink:#04110d; --brand-soft:#12312a;
+--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+}
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:680px;margin:0 auto;padding:24px 16px 56px}
+h1,h2,h3{font-family:"Space Grotesk",Inter,sans-serif;line-height:1.15;margin:0}
+h1{font-size:clamp(28px,6vw,40px);letter-spacing:-.02em}
+h2{font-size:22px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--brand);background:var(--brand-soft);padding:6px 12px;border-radius:999px;margin-bottom:16px}
+.lead{color:var(--muted);font-size:17px;margin:14px 0 24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
+.stack>*+*{margin-top:18px}
+.btn{appearance:none;border:0;cursor:pointer;font:600 16px Inter,sans-serif;padding:14px 22px;border-radius:12px;background:var(--brand);color:var(--brand-ink);text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .08s,opacity .2s}
+.btn:active{transform:scale(.98)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.block{width:100%}
+.field{display:grid;gap:6px;margin-bottom:16px}
+.field label{font-weight:600;font-size:15px}
+.field .help{font-size:13px;color:var(--muted)}
+.inp{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden}
+.inp:focus-within{border-color:var(--brand)}
+.inp span{padding:0 12px;color:var(--muted);font-weight:600}
+.inp input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font:500 17px Inter,sans-serif;padding:13px 12px 13px 0;outline:none}
+.inp input::-webkit-outer-spin-button,.inp input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.inp input[type=number]{-moz-appearance:textfield}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:480px){.row2{grid-template-columns:1fr}}
+.big{font:700 clamp(36px,9vw,52px) "Space Grotesk",sans-serif;letter-spacing:-.02em;color:var(--brand)}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.kpi{border:1px solid var(--line);border-radius:14px;padding:14px}
+.kpi .k{font-size:13px;color:var(--muted)}
+.kpi .v{font:700 22px "Space Grotesk",sans-serif;margin-top:2px}
+.split{height:14px;border-radius:99px;overflow:hidden;display:flex;margin:18px 0 10px;background:var(--line)}
+.split i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--muted)}
+.legend b{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.alert{border-radius:12px;padding:12px 14px;font-size:14px;margin-top:16px}
+.alert.bad{background:rgba(214,69,69,.12);color:var(--bad)}
+.alert.mid{background:rgba(212,154,0,.14);color:var(--mid)}
+.alert.ok{background:var(--brand-soft);color:var(--brand)}
+.recs{display:grid;gap:14px}
+.rec{border:1px solid var(--line);border-radius:14px;padding:16px}
+.rec h3{font-size:17px;margin-bottom:6px}
+.rec p{margin:0 0 12px;color:var(--muted);font-size:15px}
+.rec .row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.coupon{display:inline-block;font:700 14px ui-monospace,monospace;letter-spacing:.06em;border:1.5px dashed currentColor;padding:4px 10px;border-radius:8px}
+.small{font-size:13px;color:var(--muted)}
+.author{display:flex;gap:12px;align-items:center;margin-top:6px;font-size:14px;color:var(--muted)}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font:700 15px "Space Grotesk",sans-serif;flex:none}
+footer{text-align:center;font-size:13px;color:var(--muted);margin-top:36px}
+footer a{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap stack">
+
+<section>
+<span class="eyebrow">🧮 Calculadora gratuita · 1 minuto</span>
+<h1>¿A cuánto tenés que vender?</h1>
+<p class="lead">Cargá lo que te cuesta tu producto o servicio y descubrí el precio que cubre costos, gastos y comisiones, cuánto ganás de verdad y cuántas ventas necesitás para no perder plata.</p>
+<div class="author"><div class="avatar">FU</div><div><strong style="color:var(--ink)">Facuss Urbano</strong><br>Herramienta gratis · No se guarda ningún dato</div></div>
+</section>
+
+<section class="card">
+<h2 style="margin-bottom:18px">Tus números</h2>
+<div class="field">
+<label for="costo">Costo de cada unidad</label>
+<div class="inp"><span>$</span><input id="costo" type="number" inputmode="decimal" min="0" step="any" value="4000"></div>
+<div class="help">Lo que te cuesta la mercadería o los materiales de una unidad (o de un servicio).</div>
+</div>
+<div class="field">
+<label for="fijos">Gastos fijos por mes</label>
+<div class="inp"><span>$</span><input id="fijos" type="number" inputmode="decimal" min="0" step="any" value="300000"></div>
+<div class="help">Alquiler, luz, internet, sueldos, monotributo, apps. Todo lo que pagás vendas o no.</div>
+</div>
+<div class="field">
+<label for="unidades">Unidades que vendés por mes</label>
+<div class="inp"><span>#</span><input id="unidades" type="number" inputmode="numeric" min="1" step="1" value="200"></div>
+<div class="help">Una estimación realista. Sirve para repartir los gastos fijos.</div>
+</div>
+<div class="row2">
+<div class="field">
+<label for="comision">Comisiones de cobro</label>
+<div class="inp"><input id="comision" type="number" inputmode="decimal" min="0" max="90" step="any" value="6" style="padding-left:14px"><span>%</span></div>
+<div class="help">Mercado Pago, tarjeta, plataforma.</div>
+</div>
+<div class="field">
+<label for="margen">Ganancia que querés</label>
+<div class="inp"><input id="margen" type="number" inputmode="decimal" min="0" max="90" step="any" value="25" style="padding-left:14px"><span>%</span></div>
+<div class="help">Sobre el precio de venta.</div>
+</div>
+</div>
+</section>
+
+<section class="card" id="res">
+<div class="small">Precio de venta sugerido</div>
+<div class="big" id="precio">—</div>
+<div class="small" id="precioNote"></div>
+<div class="split" id="split"></div>
+<div class="legend" id="legend"></div>
+<div class="kpis">
+<div class="kpi"><div class="k">Ganancia por unidad</div><div class="v" id="gan">—</div></div>
+<div class="kpi"><div class="k">Ganancia por mes</div><div class="v" id="ganMes">—</div></div>
+<div class="kpi"><div class="k">Para no perder plata</div><div class="v" id="eq">—</div></div>
+<div class="kpi"><div class="k">Costo real por unidad</div><div class="v" id="costoReal">—</div></div>
+</div>
+<div id="alert"></div>
+</section>
+
+<section class="card">
+<h2 style="margin-bottom:6px">Ordená tus números de verdad</h2>
+<p class="small" style="margin:0 0 16px">Esta calculadora te da una referencia rápida. Para fijar precios producto por producto y saber cuánto ganás cada mes, estas guías te llevan paso a paso:</p>
+<div class="recs" id="recs"></div>
+<p style="margin:18px 0 10px">Con este cupón tenés un <strong>15 % de descuento</strong> en cualquier guía:</p>
+<span class="coupon" id="coupon"></span>
+<div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+<a class="btn ghost" id="storeLink" target="_blank" rel="noopener">Ver la tienda completa</a>
+<a class="btn ghost" id="testLink" target="_blank" rel="noopener">Test de seguridad gratis</a>
+</div>
+</section>
+
+<div style="display:flex;gap:10px;flex-wrap:wrap">
+<button class="btn ghost" id="share">Compartir la calculadora</button>
+<button class="btn ghost" id="reset">Empezar de nuevo</button>
+</div>
+
+<footer>
+Hecho por <strong>Facuss Urbano</strong> · <a id="footStore" target="_blank" rel="noopener">Tienda</a> · <a id="footIg" target="_blank" rel="noopener">Instagram</a><br>
+Resultado orientativo. No incluye impuestos específicos de tu actividad: consultalos con tu contador.
+</footer>
+</div>
+
+<script>
+/* ============ CONFIGURACIÓN — editá acá links y precios ============ */
+const CONFIG = {
+store: "https://urbansurge8.gumroad.com",
+instagram: "https://instagram.com/facuss.digital",
+securityTest: "https://facussurbano-facuss.github.io/evaluador-seguridad-pymes/",
+coupon: "LANZAMIENTO",
+products: [
+{ name: "Kit de Costos y Precios para Emprendedores", price: 17, slug: "utjbw",
+pitch: "Calculá el costo real de cada producto y fijá precios con margen, con planilla incluida." },
+{ name: "Planillas para ordenar tu negocio (Excel + guía)", price: 19, slug: "tcjaxa",
+pitch: "Ventas, gastos, stock y clientes en un Excel de 7 hojas que te dice cuánto ganás cada mes." },
+{ name: "Flujo de Caja y Presupuesto para Emprendimientos", price: 17, slug: "xbxwzn",
+pitch: "Anticipá cuándo entra y sale la plata para no quedarte sin caja a fin de mes." }
+]
+};
+/* ================================================================== */
+
+const $ = id => document.getElementById(id);
+const DEF = {costo:4000, fijos:300000, unidades:200, comision:6, margen:25};
+const ids = Object.keys(DEF);
+const fmt = n => "$ " + Math.round(n).toLocaleString("es-AR");
+const num = id => { const v = parseFloat($(id).value); return isFinite(v) && v >= 0 ? v : 0; };
+
+function calc(){
+const costo = num("costo"), fijos = num("fijos"), u = Math.max(1, Math.round(num("unidades")));
+const com = Math.min(num("comision"), 90) / 100, mar = Math.min(num("margen"), 90) / 100;
+const fijoU = fijos / u;
+const costoReal = costo + fijoU;
+const resto = 1 - com - mar;
+const alert = $("alert");
+
+if (resto <= 0.05) {
+$("precio").textContent = "—";
+$("precioNote").textContent = "";
+["gan","ganMes","eq","costoReal"].forEach(k => $(k).textContent = "—");
+$("split").innerHTML = ""; $("legend").innerHTML = "";
+alert.innerHTML = '<div class="alert bad">La suma de comisiones y ganancia es demasiado alta. Bajá alguno de los dos porcentajes.</div>';
+return;
+}
+
+const precio = costoReal / resto;
+const comU = precio * com;
+const gan = precio * mar;
+const contrib = precio - costo - comU; // lo que deja cada venta para pagar fijos
+const eq = contrib > 0 ? Math.ceil(fijos / contrib) : Infinity;
+
+$("precio").textContent = fmt(precio);
+$("precioNote").textContent = `Redondeado: ${fmt(Math.ceil(precio / 50) * 50)} · por unidad`;
+$("gan").textContent = fmt(gan);
+$("ganMes").textContent = fmt(gan * u);
+$("eq").textContent = isFinite(eq) ? `${eq.toLocaleString("es-AR")} ventas/mes` : "—";
+$("costoReal").textContent = fmt(costoReal);
+
+const parts = [
+{l:"Mercadería", v:costo, c:"#7c8b86"},
+{l:"Gastos fijos", v:fijoU, c:"var(--mid)"},
+{l:"Comisiones", v:comU, c:"var(--bad)"},
+{l:"Tu ganancia", v:gan, c:"var(--brand)"}
+];
+$("split").innerHTML = parts.map(p => `<i style="width:${p.v / precio * 100}%;background:${p.c}"></i>`).join("");
+$("legend").innerHTML = parts.map(p => `<span><b style="background:${p.c}"></b>${p.l} ${Math.round(p.v / precio * 100)}%</span>`).join("");
+
+let msg;
+if (eq > u) msg = `<div class="alert bad">Con ${u} ventas por mes no llegás a cubrir los gastos fijos: necesitás ${eq.toLocaleString("es-AR")}. Revisá gastos, precio o volumen.</div>`;
+else if (mar < .15) msg = '<div class="alert mid">Una ganancia menor al 15 % deja poco margen para imprevistos, inflación o descuentos.</div>';
+else msg = `<div class="alert ok">A partir de la venta número ${eq.toLocaleString("es-AR")} del mes, cada venta es ganancia.</div>`;
+alert.innerHTML = msg;
+}
+
+ids.forEach(id => $(id).addEventListener("input", calc));
+$("reset").onclick = () => { ids.forEach(id => $(id).value = DEF[id]); calc(); window.scrollTo({top:0,behavior:"smooth"}); };
+$("share").onclick = async () => {
+const data = {title:"¿A cuánto tenés que vender?", text:"Calculadora gratis de precios para tu negocio:", url:location.href};
+try { if (navigator.share) { await navigator.share(data); } else { await navigator.clipboard.writeText(location.href); $("share").textContent = "¡Link copiado!"; } } catch (e) {}
+};
+
+$("recs").innerHTML = CONFIG.products.map(p => `<div class="rec"><h3>${p.name}</h3><p>${p.pitch}</p>
+<div class="row"><strong>USD ${p.price}</strong><a class="btn" href="${CONFIG.store}/l/${p.slug}" target="_blank" rel="noopener">Ver la guía →</a></div></div>`).join("");
+$("coupon").textContent = CONFIG.coupon;
+$("storeLink").href = CONFIG.store;
+$("testLink").href = CONFIG.securityTest;
+$("footStore").href = CONFIG.store;
+$("footIg").href = CONFIG.instagram;
+calc();
+</script>
+</body>
+</html>
