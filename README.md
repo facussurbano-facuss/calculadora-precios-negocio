@@ -12,6 +12,7 @@ Funciona completamente en tu navegador: no se guarda ni se envía ningún dato.
 
 ## Para ir más allá
 
+- **[Pack Gestión: los 5 kits juntos](https://urbansurge8.gumroad.com/l/bcavp)** (USD 45 en lugar de USD 80)
 - [Kit de Costos y Precios para Emprendedores](https://urbansurge8.gumroad.com/l/utjbw)
 - [Planillas para ordenar tu negocio (Excel + guía)](https://urbansurge8.gumroad.com/l/tcjaxa)
 - [Flujo de Caja y Presupuesto para Emprendimientos](https://urbansurge8.gumroad.com/l/xbxwzn)
